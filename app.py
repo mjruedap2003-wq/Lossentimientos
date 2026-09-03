@@ -1,28 +1,23 @@
-from textblob import TextBlob
+import json
+from PIL import Image
 import pandas as pd
 import streamlit as st
-from PIL import Image
-from googletrans import Translator
+from streamlit_lottie import st_lottie
+from textblob import TextBlob
 
-st.title('Análisis de Sentimiento, parchate y responde, no hay respuestas buenas ni malas')
-image = Image.open('Juggling ball.json')
-st.image(image)
+# Función para cargar el archivo JSON local
+def load_lottiefile(filepath: str):
+  with open(filepath, "r") as f:
+    return json.load(f)
+
+
+st.title("Análisis de Sentimiento, parchate y responde, no hay respuestas buenas ni malas")
+
+# Cargar y mostrar la animación Lottie (JSON)
+lottie_anim = load_lottiefile("Juggling ball.json")
+st_lottie(lottie_anim, height=300, key="juggling")
+
 st.subheader("Por favor escribe en el campo de texto la frase que deseas analizar")
-
-translator = Translator()
-
-with st.sidebar:
-               st.subheader("Polaridad y Subjetividad")
-               ("""
-                Polaridad: Indica si el sentimiento expresado en el texto es positivo, negativo o neutral. 
-                Su valor oscila entre -1 (muy negativo) y 1 (muy positivo), con 0 representando un sentimiento neutral.
-                
-               Subjetividad: Mide cuánto del contenido es subjetivo (opiniones, emociones, creencias) frente a objetivo
-               (hechos). Va de 0 a 1, donde 0 es completamente objetivo y 1 es completamente subjetivo.
-
-                 """
-               ) 
-
 with st.expander('Analizar texto'):
     text = st.text_input('Escribe por favor: ')
     if text:
